@@ -1,4 +1,4 @@
-export { System, fdWrite, stdout }
+export { System, system, fdWrite, stdout }
 
 foreign _ein_system_fd_write : Number -> String -> Number
 
