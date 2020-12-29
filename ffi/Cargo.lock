@@ -27,9 +27,9 @@ checksum = "4c0496836a84f8d0495758516b8621a622beb77c0fed418570e50764093ced48"
 
 [[package]]
 name = "ein-ffi"
-version = "0.1.0"
+version = "0.2.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "6eb106d248ffc56274a2cac5eb4c40eaa0093726b02f51d6ab034c96d45f0905"
+checksum = "f49ad84f73bb42be8cce34c66811c7098043b82128c155a3da2f72afdd0d6a22"
 dependencies = [
  "bdwgc-alloc",
 ]

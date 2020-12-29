@@ -12,7 +12,5 @@ extern "C" fn _ein_system_fd_write(fd: ffi::Number, buffer: ffi::EinString) -> f
 
 #[no_mangle]
 extern "C" fn _ein_system_exit(code: ffi::Number) -> ffi::None {
-    exit(f64::from(code) as i32);
-
-    ffi::None::new()
+    exit(f64::from(code) as i32)
 }
