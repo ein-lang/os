@@ -1,4 +1,4 @@
-export { System, fdWrite, internal_handleMain, stdout }
+export { System, fdWrite, _internal_handleMain, stdout }
 
 foreign _ein_system_fd_write : Number -> String -> Number
 foreign _ein_system_exit : Number -> None
@@ -13,8 +13,8 @@ fdWrite = System.fdWrite
 stdout : Number
 stdout = 1
 
-internal_handleMain : (System -> Number) -> None
-internal_handleMain main =
+_internal_handleMain : (System -> Number) -> None
+_internal_handleMain main =
   System{
     fdWrite = _ein_system_fd_write,
   }
