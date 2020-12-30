@@ -1,0 +1,21 @@
+export { system, handleSystemResult }
+
+import "/System"
+
+foreign _ein_system_fd_write : Number -> String -> Number
+foreign _ein_system_exit : Number -> None
+
+system : System
+system =
+  System{
+    fdWrite = _ein_system_fd_write,
+  }
+
+handleSystemResult : None | Error -> None
+handleSystemResult result =
+  _ein_system_exit
+  (
+    case _ = result
+      None => 0
+      Error => 1
+  )

@@ -1,29 +1,11 @@
-export { System, system, handleSystemResult, fdWrite, stdout }
-
-foreign _ein_system_fd_write : Number -> String -> Number
-foreign _ein_system_exit : Number -> None
+export { System, fdWrite, stdout }
 
 type System {
   fdWrite : Number -> String -> Number,
 }
-
-system : System
-system =
-  System{
-    fdWrite = _ein_system_fd_write,
-  }
 
 fdWrite : System -> Number -> String -> Number
 fdWrite = System.fdWrite
 
 stdout : Number
 stdout = 1
-
-handleSystemResult : None | Error -> None
-handleSystemResult result =
-  _ein_system_exit
-  (
-    case _ = result
-      None => 0
-      Error => 1
-  )
