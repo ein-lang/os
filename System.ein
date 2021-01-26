@@ -1,11 +1,16 @@
-export { System, fdWrite, _handleMain, stdout }
+export { System, MainFunction, fdWrite, _handleMain, stdout }
 
-foreign _ein_system_fd_write : Number -> String -> Number
-foreign _ein_system_exit : Number -> None
+export foreign { main }
+
+import foreign _ein_system_fd_write : Number -> String -> Number
+import foreign _ein_system_exit : Number -> None
+import foreign _ein_main : MainFunction
 
 type System {
   fdWrite : Number -> String -> Number,
 }
+
+type MainFunction = System -> Number
 
 fdWrite : System -> Number -> String -> Number
 fdWrite = System.fdWrite
@@ -13,10 +18,11 @@ fdWrite = System.fdWrite
 stdout : Number
 stdout = 1
 
-_handleMain : (System -> Number) -> None
-_handleMain main =
+system : System
+system =
   System{
     fdWrite = _ein_system_fd_write,
   }
-  |> main
-  |> _ein_system_exit
+
+main : None -> None
+main = system |> _ein_main |> _ein_system_exit
