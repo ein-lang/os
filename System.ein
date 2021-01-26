@@ -1,4 +1,4 @@
-export { System, MainFunction, fdWrite, _handleMain, stdout }
+export { System, MainFunction, fdWrite, stdout }
 
 export foreign { main }
 
