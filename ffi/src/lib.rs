@@ -1,7 +1,24 @@
+use bdwgc_alloc::Allocator;
 use std::fs::File;
 use std::io::Write;
+use std::os::raw::{c_int, c_void};
 use std::os::unix::io::FromRawFd;
 use std::process::exit;
+
+extern "C" {
+    static _ein_system_main:
+        extern "C" fn(environment: *const c_void, argument: ffi::None) -> ffi::Number;
+}
+
+#[global_allocator]
+static GLOBAL_ALLOCATOR: Allocator = Allocator;
+
+#[no_mangle]
+pub extern "C" fn main() -> c_int {
+    unsafe { Allocator::initialize() }
+
+    f64::from(unsafe { _ein_system_main(std::ptr::null(), ffi::None::new()) }) as c_int
+}
 
 #[no_mangle]
 extern "C" fn _ein_system_fd_write(fd: ffi::Number, buffer: ffi::EinString) -> ffi::Number {
