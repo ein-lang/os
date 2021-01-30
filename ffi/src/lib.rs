@@ -1,7 +1,8 @@
 use bdwgc_alloc::Allocator;
+use std::alloc::Layout;
 use std::fs::File;
 use std::io::Write;
-use std::os::raw::c_int;
+use std::os::raw::{c_int, c_void};
 use std::os::unix::io::FromRawFd;
 
 extern "C" {
@@ -10,6 +11,11 @@ extern "C" {
 
 #[global_allocator]
 static GLOBAL_ALLOCATOR: Allocator = Allocator;
+
+#[no_mangle]
+pub extern "C" fn _ein_malloc(size: usize) -> *mut c_void {
+    (unsafe { std::alloc::alloc(Layout::from_size_align(size, 8).unwrap()) }) as *mut c_void
+}
 
 #[no_mangle]
 pub extern "C" fn main() -> c_int {
