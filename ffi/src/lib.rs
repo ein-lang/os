@@ -22,5 +22,9 @@ pub extern "C" fn main() -> c_int {
 extern "C" fn _ein_system_fd_write(fd: ffi::Number, buffer: ffi::EinString) -> ffi::Number {
     let mut file = unsafe { File::from_raw_fd(f64::from(fd) as i32) };
 
-    (file.write(buffer.as_slice()).unwrap() as f64).into()
+    let byte_count = file.write(buffer.as_slice()).unwrap();
+
+    std::mem::forget(file);
+
+    (byte_count as f64).into()
 }
