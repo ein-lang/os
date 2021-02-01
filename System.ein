@@ -1,4 +1,12 @@
-export { System, MainFunction, fdWrite, stdout }
+export {
+  System,
+  MainFunction,
+  fdRead,
+  fdWrite,
+  stdin,
+  stdout,
+  stderr,
+}
 
 export foreign { _ein_system_main }
 
