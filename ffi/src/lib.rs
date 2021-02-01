@@ -1,4 +1,7 @@
+mod result;
+
 use bdwgc_alloc::Allocator;
+use result::FfiResult;
 use std::alloc::Layout;
 use std::fs::File;
 use std::io::Write;
@@ -25,12 +28,18 @@ pub extern "C" fn main() -> c_int {
 }
 
 #[no_mangle]
-extern "C" fn _ein_system_fd_write(fd: ffi::Number, buffer: ffi::EinString) -> ffi::Number {
+extern "C" fn _ein_system_fd_write(
+    fd: ffi::Number,
+    buffer: ffi::EinString,
+) -> *const FfiResult<ffi::Number> {
     let mut file = unsafe { File::from_raw_fd(f64::from(fd) as i32) };
 
-    let byte_count = file.write(buffer.as_slice()).unwrap();
+    let byte_count = match file.write(buffer.as_slice()) {
+        Ok(count) => count,
+        Err(error) => return FfiResult::from_io_error(error),
+    };
 
     std::mem::forget(file);
 
-    (byte_count as f64).into()
+    FfiResult::ok((byte_count as f64).into())
 }
