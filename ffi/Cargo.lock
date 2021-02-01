@@ -27,9 +27,9 @@ checksum = "4c0496836a84f8d0495758516b8621a622beb77c0fed418570e50764093ced48"
 
 [[package]]
 name = "ein-ffi"
-version = "0.2.3"
+version = "0.2.4"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "9d93bd5cbb8ff9271354b8156b3f071160161706e0d030334172611682f2f07c"
+checksum = "2145646b33b02a881ad6ad87b857a49a0dfab5bf2098d20e48ebe3e1b6865b7a"
 
 [[package]]
 name = "libc"

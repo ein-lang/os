@@ -1,20 +1,46 @@
-export { System, MainFunction, fdWrite, stdout }
+export {
+  System,
+  MainFunction,
+  fdRead,
+  fdWrite,
+  stdin,
+  stdout,
+  stderr,
+}
 
 export foreign { _ein_system_main }
 
+import foreign _ein_system_fd_read : Number -> Number -> FdReadResult
 import foreign _ein_system_fd_write : Number -> String -> FdWriteResult
 import foreign _ein_main : MainFunction
 
 type MainFunction = System -> Number
 
 type System {
+  fdRead : Number -> Number -> FdReadResult,
   fdWrite : Number -> String -> FdWriteResult,
+}
+
+type FdReadResult {
+  bytes : String,
+  error : Number,
 }
 
 type FdWriteResult {
   bytes : Number,
   error : Number,
 }
+
+fdRead : System -> Number -> Number -> String | Error
+fdRead system fd count =
+  let
+    result = System.fdRead system fd count
+    errorNumber = FdReadResult.error result
+  in
+    if errorNumber == -1 then
+      FdReadResult.bytes result
+    else
+      error errorNumber
 
 fdWrite : System -> Number -> String -> Number | Error
 fdWrite system fd content =
@@ -27,12 +53,19 @@ fdWrite system fd content =
     else
       error errorNumber
 
+stdin : Number
+stdin = 0
+
 stdout : Number
 stdout = 1
+
+stderr : Number
+stderr = 2
 
 system : System
 system =
   System{
+    fdRead = _ein_system_fd_read,
     fdWrite = _ein_system_fd_write,
   }
 
