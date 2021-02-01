@@ -2,17 +2,30 @@ export { System, MainFunction, fdWrite, stdout }
 
 export foreign { _ein_system_main }
 
-import foreign _ein_system_fd_write : Number -> String -> Number
+import foreign _ein_system_fd_write : Number -> String -> FdWriteResult
 import foreign _ein_main : MainFunction
 
 type MainFunction = System -> Number
 
 type System {
-  fdWrite : Number -> String -> Number,
+  fdWrite : Number -> String -> FdWriteResult,
 }
 
-fdWrite : System -> Number -> String -> Number
-fdWrite = System.fdWrite
+type FdWriteResult {
+  bytes : Number,
+  error : Number,
+}
+
+fdWrite : System -> Number -> String -> Number | Error
+fdWrite system fd content =
+  let
+    result = System.fdWrite system fd content
+    errorNumber = FdWriteResult.error result
+  in
+    if errorNumber == -1 then
+      FdWriteResult.bytes result
+    else
+      error errorNumber
 
 stdout : Number
 stdout = 1
