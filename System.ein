@@ -45,8 +45,14 @@ fdWrite system fd content =
     else
       error errorNumber
 
+stdin : Number
+stdin = 0
+
 stdout : Number
 stdout = 1
+
+stderr : Number
+stderr = 2
 
 system : System
 system =
