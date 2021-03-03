@@ -21,6 +21,18 @@ pub extern "C" fn _ein_malloc(size: usize) -> *mut c_void {
 }
 
 #[no_mangle]
+pub extern "C" fn _ein_realloc(pointer: *mut c_void, size: usize) -> *mut c_void {
+    // HACK Layouts are expected to be ignored by the global allocator.
+    (unsafe {
+        std::alloc::realloc(
+            pointer as *mut u8,
+            Layout::from_size_align(size, 0).unwrap(),
+            size,
+        )
+    }) as *mut c_void
+}
+
+#[no_mangle]
 pub extern "C" fn main() -> c_int {
     unsafe { Allocator::initialize() }
 
