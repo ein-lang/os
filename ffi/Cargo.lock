@@ -11,9 +11,9 @@ dependencies = [
 
 [[package]]
 name = "bdwgc-alloc"
-version = "0.5.2"
+version = "0.6.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "213bd7476d1f29299de16a11b16368bfbc9ed789768fce386fd2ef1ee239aebe"
+checksum = "ceed387bb03bf60e7368a07b7f943d3612a04ff7cf11e73801ffa3677370aa24"
 dependencies = [
  "autotools",
  "libc",
