@@ -22,7 +22,7 @@ pub extern "C" fn _ein_malloc(size: usize) -> *mut c_void {
 
 #[no_mangle]
 pub extern "C" fn _ein_realloc(pointer: *mut c_void, size: usize) -> *mut c_void {
-    // HACK Layouts are expected to be ignored by the global allocator.
+    // Layouts are ignored by the bdwgc global allocator.
     (unsafe {
         std::alloc::realloc(
             pointer as *mut u8,
