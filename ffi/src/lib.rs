@@ -1,3 +1,4 @@
+mod cps;
 mod result;
 
 use bdwgc_alloc::Allocator;
@@ -11,10 +12,10 @@ use std::os::unix::io::FromRawFd;
 extern "C" {
     fn _ein_system_main(argument: ffi::None) -> ffi::Number;
     fn _ein_main(
-        stack: *mut ffi::Stack,
+        stack: *mut cps::Stack,
         continuation: fn(ffi::Number) -> u8,
         system: System,
-    ) -> ffi::CpsResult;
+    ) -> cps::Result;
 }
 
 const DEFAULT_ALIGNMENT: usize = 8;
