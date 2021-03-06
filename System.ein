@@ -12,7 +12,7 @@ export foreign { _ein_system_main }
 
 import foreign _ein_system_fd_read : Number -> Number -> FdReadResult
 import foreign _ein_system_fd_write : Number -> String -> FdWriteResult
-import foreign _ein_main : MainFunction
+import foreign async _ein_main : MainFunction
 
 type MainFunction = System -> Number
 
