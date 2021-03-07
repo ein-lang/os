@@ -1,6 +1,6 @@
 use std::alloc::{alloc, Layout};
 
-const INITIAL_CAPACITY: usize = 1024;
+const INITIAL_CAPACITY: usize = 256;
 const DEFAULT_ALIGNMENT: usize = 8;
 
 #[repr(C)]
