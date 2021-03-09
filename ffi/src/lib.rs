@@ -1,4 +1,3 @@
-mod cps;
 mod result;
 
 use bdwgc_alloc::Allocator;
@@ -11,10 +10,10 @@ use std::os::unix::io::FromRawFd;
 
 extern "C" {
     fn _ein_system_main(
-        stack: *mut cps::Stack,
-        continuation: extern "C" fn(*mut cps::Stack, f64) -> !,
+        stack: *mut ffi::cps::Stack,
+        continuation: extern "C" fn(*mut ffi::cps::Stack, f64) -> ffi::cps::Result,
         argument: ffi::None,
-    ) -> !;
+    ) -> ffi::cps::Result;
 }
 
 const DEFAULT_ALIGNMENT: usize = 8;
@@ -44,12 +43,14 @@ pub extern "C" fn _ein_realloc(pointer: *mut c_void, size: usize) -> *mut c_void
 pub extern "C" fn main() -> c_int {
     unsafe { Allocator::initialize() }
 
-    let mut stack = cps::Stack::new();
+    let mut stack = ffi::cps::Stack::new();
 
-    unsafe { _ein_system_main(&mut stack, exit, ffi::None::new()) }
+    unsafe { _ein_system_main(&mut stack, exit, ffi::None::new()) };
+
+    0
 }
 
-extern "C" fn exit(_: *mut cps::Stack, code: f64) -> ! {
+extern "C" fn exit(_: *mut ffi::cps::Stack, code: f64) -> ffi::cps::Result {
     std::process::exit(code as i32)
 }
 
