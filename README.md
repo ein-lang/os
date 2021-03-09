@@ -6,4 +6,4 @@ Its API design is based on [WASI](https://wasi.dev/).
 
 ## License
 
-[MIT](LICENSE)
+[Apache 2.0](LICENSE)
