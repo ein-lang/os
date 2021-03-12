@@ -47,7 +47,7 @@ pub extern "C" fn main() -> c_int {
 
     unsafe { _ein_system_main(&mut stack, exit, ffi::None::new()) };
 
-    0
+    unreachable!()
 }
 
 extern "C" fn exit(_: *mut ffi::cps::Stack, code: f64) -> ffi::cps::Result {
