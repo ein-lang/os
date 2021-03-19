@@ -1,0 +1,70 @@
+export {
+  Os,
+  fdRead,
+  fdWrite,
+  stdin,
+  stdout,
+  stderr,
+}
+
+export foreign { _ein_os_main }
+
+import foreign "c" _ein_os_fd_read : Number -> Number -> FdReadResult
+import foreign "c" _ein_os_fd_write : Number -> String -> FdWriteResult
+import foreign _ein_main : Os -> Number
+
+type Os {
+  fdRead : Number -> Number -> FdReadResult,
+  fdWrite : Number -> String -> FdWriteResult,
+}
+
+type FdReadResult {
+  bytes : String,
+  error : Number,
+}
+
+type FdWriteResult {
+  bytes : Number,
+  error : Number,
+}
+
+fdRead : Os -> Number -> Number -> String | Error
+fdRead os fd count =
+  let
+    result = Os.fdRead os fd count
+    errorNumber = FdReadResult.error result
+  in
+    if errorNumber == -1 then
+      FdReadResult.bytes result
+    else
+      error errorNumber
+
+fdWrite : Os -> Number -> String -> Number | Error
+fdWrite os fd content =
+  let
+    result = Os.fdWrite os fd content
+    errorNumber = FdWriteResult.error result
+  in
+    if errorNumber == -1 then
+      FdWriteResult.bytes result
+    else
+      error errorNumber
+
+stdin : Number
+stdin = 0
+
+stdout : Number
+stdout = 1
+
+stderr : Number
+stderr = 2
+
+os : Os
+os =
+  Os{
+    fdRead = _ein_os_fd_read,
+    fdWrite = _ein_os_fd_write,
+  }
+
+_ein_os_main : None -> Number
+_ein_os_main _ = _ein_main os
