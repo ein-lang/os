@@ -4,4 +4,4 @@ set -e
 
 cd ffi
 cargo build --release
-echo ffi/target/release/libsystem.a
+echo ffi/target/release/libos.a
