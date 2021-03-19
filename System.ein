@@ -1,6 +1,5 @@
 export {
   System,
-  MainFunction,
   fdRead,
   fdWrite,
   stdin,
@@ -12,9 +11,7 @@ export foreign { _ein_system_main }
 
 import foreign "c" _ein_system_fd_read : Number -> Number -> FdReadResult
 import foreign "c" _ein_system_fd_write : Number -> String -> FdWriteResult
-import foreign _ein_main : MainFunction
-
-type MainFunction = System -> Number
+import foreign _ein_main : System -> Number
 
 type System {
   fdRead : Number -> Number -> FdReadResult,
