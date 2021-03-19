@@ -1,5 +1,5 @@
 export { MainFunction }
 
-import "/System"
+import "/Os"
 
-type MainFunction = System.System -> Number
+type MainFunction = Os.Os -> Number

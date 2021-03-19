@@ -9,7 +9,7 @@ use std::os::raw::{c_int, c_void};
 use std::os::unix::io::FromRawFd;
 
 extern "C" {
-    fn _ein_system_main(
+    fn _ein_os_main(
         stack: *mut ffi::cps::Stack,
         continuation: extern "C" fn(*mut ffi::cps::Stack, f64) -> ffi::cps::Result,
         argument: ffi::None,
@@ -45,7 +45,7 @@ pub extern "C" fn main() -> c_int {
 
     let mut stack = ffi::cps::Stack::new();
 
-    unsafe { _ein_system_main(&mut stack, exit, ffi::None::new()) };
+    unsafe { _ein_os_main(&mut stack, exit, ffi::None::new()) };
 
     unreachable!()
 }
@@ -55,7 +55,7 @@ extern "C" fn exit(_: *mut ffi::cps::Stack, code: f64) -> ffi::cps::Result {
 }
 
 #[no_mangle]
-extern "C" fn _ein_system_fd_read(
+extern "C" fn _ein_os_fd_read(
     fd: ffi::Number,
     buffer_size: ffi::Number,
 ) -> *const FfiResult<ffi::EinString> {
@@ -74,7 +74,7 @@ extern "C" fn _ein_system_fd_read(
 }
 
 #[no_mangle]
-extern "C" fn _ein_system_fd_write(
+extern "C" fn _ein_os_fd_write(
     fd: ffi::Number,
     buffer: ffi::EinString,
 ) -> *const FfiResult<ffi::Number> {
