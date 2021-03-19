@@ -1,0 +1,5 @@
+export { MainFunction }
+
+import "/System"
+
+type MainFunction = System.System -> Number
