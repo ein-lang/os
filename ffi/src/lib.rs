@@ -89,3 +89,22 @@ extern "C" fn _ein_os_fd_write(
 
     FfiResult::ok((byte_count as f64).into())
 }
+
+#[no_mangle]
+extern "C" fn _ein_os_fd_readdir(
+    fd: ffi::Number,
+    buffer_size: ffi::Number,
+) -> *const FfiResult<ffi::EinString> {
+    let mut file = unsafe { File::from_raw_fd(f64::from(fd) as i32) };
+    let mut buffer = vec![0; f64::from(buffer_size) as usize];
+
+    let count = match file.read(&mut buffer) {
+        Ok(count) => count,
+        Err(error) => return FfiResult::from_io_error(error),
+    };
+    buffer.resize(count, 0);
+
+    std::mem::forget(file);
+
+    FfiResult::ok(ffi::EinString::from(buffer))
+}
