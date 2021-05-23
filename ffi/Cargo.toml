@@ -8,5 +8,4 @@ edition = "2018"
 crate-type = ["staticlib"]
 
 [dependencies]
-bdwgc-alloc = "0.6"
 ffi = { package = "ein-ffi", version = "0.5" }
