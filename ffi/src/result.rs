@@ -5,27 +5,23 @@ pub struct FfiResult<T: Default> {
 }
 
 impl<T: Default> FfiResult<T> {
-    pub fn ok(value: T) -> *const Self {
+    pub fn ok(value: T) -> Self {
         Self {
             value,
             error: (-1.0).into(),
         }
-        .leak()
     }
 
-    pub fn error(error: impl Into<ffi::Number>) -> *const Self {
+    pub fn error(error: impl Into<ffi::Number>) -> Self {
         Self {
             value: Default::default(),
             error: error.into(),
         }
-        .leak()
     }
+}
 
-    pub fn from_io_error(error: std::io::Error) -> *const Self {
+impl<T: Default> From<std::io::Error> for FfiResult<T> {
+    fn from(error: std::io::Error) -> Self {
         Self::error(error.raw_os_error().map(f64::from).unwrap_or(std::f64::NAN))
-    }
-
-    fn leak(self) -> *const Self {
-        Box::leak(Box::new(self))
     }
 }
