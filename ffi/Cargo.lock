@@ -2,9 +2,9 @@
 # It is not intended for manual editing.
 [[package]]
 name = "autotools"
-version = "0.2.2"
+version = "0.2.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "3b9f0494812b4a30c521d6122ff71c4f84ed4b1edae73e79cd7f38c9ae027943"
+checksum = "7b875eaceeddbbfb52c4d102af0e28872be06ba363b9b28c7551304beb3eac42"
 dependencies = [
  "cc",
 ]
@@ -27,15 +27,15 @@ checksum = "e3c69b077ad434294d3ce9f1f6143a2a4b89a8a2d54ef813d85003a4fd1137fd"
 
 [[package]]
 name = "ein-ffi"
-version = "0.3.1"
+version = "0.5.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "f8edc26aa8c4d91faf67b980ec491e26c31ffebec7d7705dca0fc230ef5c83ba"
+checksum = "592e783a9c35ea50cd4f42735a6a1eaca14307772a011edaeb72adf857754ca2"
 
 [[package]]
 name = "libc"
-version = "0.2.88"
+version = "0.2.94"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "03b07a082330a35e43f63177cc01689da34fbffa0105e1246cf0311472cac73a"
+checksum = "18794a8ad5b29321f790b55d93dfba91e125cb1a9edbd4f8e3150acc771c1a5e"
 
 [[package]]
 name = "os"
