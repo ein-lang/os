@@ -27,7 +27,7 @@ pub extern "C" fn _ein_malloc(size: usize) -> *mut c_void {
 
 #[no_mangle]
 pub extern "C" fn _ein_realloc(pointer: *mut c_void, size: usize) -> *mut c_void {
-    // Layouts are ignored by the bdwgc global allocator.
+    // Layouts are expected to be ignored by the global allocator.
     (unsafe {
         std::alloc::realloc(
             pointer as *mut u8,
@@ -76,12 +76,12 @@ extern "C" fn _ein_os_fd_write(
 ) -> ffi::Arc<FfiResult<ffi::Number>> {
     let mut file = unsafe { File::from_raw_fd(f64::from(fd) as i32) };
 
-    let byte_count = match file.write(buffer.as_slice()) {
+    let count = match file.write(buffer.as_slice()) {
         Ok(count) => count,
         Err(error) => return ffi::Arc::new(error.into()),
     };
 
     std::mem::forget(file);
 
-    ffi::Arc::new(FfiResult::ok((byte_count as f64).into()))
+    FfiResult::ok((count as f64).into()).into()
 }
