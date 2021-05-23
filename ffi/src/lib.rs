@@ -8,6 +8,8 @@ use std::io::{Read, Write};
 use std::os::raw::{c_int, c_void};
 use std::os::unix::io::FromRawFd;
 
+const INITIAL_STACK_CAPACITY: usize = 256;
+
 extern "C" {
     fn _ein_os_main(
         stack: *mut ffi::cps::Stack,
@@ -43,7 +45,7 @@ pub extern "C" fn _ein_realloc(pointer: *mut c_void, size: usize) -> *mut c_void
 pub extern "C" fn main() -> c_int {
     unsafe { Allocator::initialize() }
 
-    let mut stack = ffi::cps::Stack::new();
+    let mut stack = ffi::cps::Stack::new(INITIAL_STACK_CAPACITY);
 
     unsafe { _ein_os_main(&mut stack, exit, ffi::None::new()) };
 
