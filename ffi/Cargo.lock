@@ -2,9 +2,9 @@
 # It is not intended for manual editing.
 [[package]]
 name = "ein-ffi"
-version = "0.5.2"
+version = "0.5.4"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "f80b295c32f5ede9254d53602ec8592d0dd20d6d1b00b36ccc66f6c3b4f80481"
+checksum = "c8ff891111eba7a72ee438d8e2f942fd84a952a5e1525089e58aa492f8e052da"
 
 [[package]]
 name = "os"
