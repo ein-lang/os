@@ -7,6 +7,7 @@ use std::io::{Read, Write};
 use std::os::raw::{c_int, c_void};
 use std::os::unix::io::FromRawFd;
 
+const DEBUG_ENVIRONMENT_VARIABLE: &str = "EIN_DEBUG";
 const INITIAL_STACK_CAPACITY: usize = 256;
 
 extern "C" {
@@ -21,12 +22,20 @@ const DEFAULT_ALIGNMENT: usize = 8;
 
 #[no_mangle]
 pub extern "C" fn _ein_malloc(size: usize) -> *mut c_void {
+    if std::env::var(DEBUG_ENVIRONMENT_VARIABLE).is_ok() {
+        eprintln!("malloc: {}", size);
+    }
+
     (unsafe { std::alloc::alloc(Layout::from_size_align(size, DEFAULT_ALIGNMENT).unwrap()) })
         as *mut c_void
 }
 
 #[no_mangle]
 pub extern "C" fn _ein_realloc(pointer: *mut c_void, size: usize) -> *mut c_void {
+    if std::env::var(DEBUG_ENVIRONMENT_VARIABLE).is_ok() {
+        eprintln!("realloc: {:x}, {}", pointer as usize, size);
+    }
+
     // Layouts are expected to be ignored by the global allocator.
     (unsafe {
         std::alloc::realloc(
@@ -35,6 +44,20 @@ pub extern "C" fn _ein_realloc(pointer: *mut c_void, size: usize) -> *mut c_void
             size,
         )
     }) as *mut c_void
+}
+
+#[no_mangle]
+pub extern "C" fn _ein_free(pointer: *mut u8) {
+    if std::env::var(DEBUG_ENVIRONMENT_VARIABLE).is_ok() {
+        eprintln!("free: {:x}", pointer as usize);
+    }
+
+    unsafe {
+        std::alloc::dealloc(
+            pointer,
+            Layout::from_size_align(0, DEFAULT_ALIGNMENT).unwrap(),
+        )
+    }
 }
 
 #[no_mangle]
