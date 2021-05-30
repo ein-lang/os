@@ -22,28 +22,36 @@ const DEFAULT_ALIGNMENT: usize = 8;
 
 #[no_mangle]
 pub extern "C" fn _ein_malloc(size: usize) -> *mut c_void {
+    let pointer =
+        (unsafe { std::alloc::alloc(Layout::from_size_align(size, DEFAULT_ALIGNMENT).unwrap()) })
+            as *mut c_void;
+
     if std::env::var(DEBUG_ENVIRONMENT_VARIABLE).is_ok() {
-        eprintln!("malloc: {}", size);
+        eprintln!("malloc: {} -> {:x}", size, pointer as usize);
     }
 
-    (unsafe { std::alloc::alloc(Layout::from_size_align(size, DEFAULT_ALIGNMENT).unwrap()) })
-        as *mut c_void
+    pointer
 }
 
 #[no_mangle]
-pub extern "C" fn _ein_realloc(pointer: *mut c_void, size: usize) -> *mut c_void {
-    if std::env::var(DEBUG_ENVIRONMENT_VARIABLE).is_ok() {
-        eprintln!("realloc: {:x}, {}", pointer as usize, size);
-    }
-
+pub extern "C" fn _ein_realloc(old_pointer: *mut c_void, size: usize) -> *mut c_void {
     // Layouts are expected to be ignored by the global allocator.
-    (unsafe {
+    let new_pointer = (unsafe {
         std::alloc::realloc(
-            pointer as *mut u8,
+            old_pointer as *mut u8,
             Layout::from_size_align(0, DEFAULT_ALIGNMENT).unwrap(),
             size,
         )
-    }) as *mut c_void
+    }) as *mut c_void;
+
+    if std::env::var(DEBUG_ENVIRONMENT_VARIABLE).is_ok() {
+        eprintln!(
+            "realloc: {:x}, {} -> {:x}",
+            old_pointer as usize, size, new_pointer as usize
+        );
+    }
+
+    new_pointer
 }
 
 #[no_mangle]
