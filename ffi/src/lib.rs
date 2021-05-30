@@ -33,7 +33,7 @@ pub extern "C" fn _ein_malloc(size: usize) -> *mut c_void {
 #[no_mangle]
 pub extern "C" fn _ein_realloc(pointer: *mut c_void, size: usize) -> *mut c_void {
     if std::env::var(DEBUG_ENVIRONMENT_VARIABLE).is_ok() {
-        eprintln!("malloc: {:x}, {}", pointer as usize, size);
+        eprintln!("realloc: {:x}, {}", pointer as usize, size);
     }
 
     // Layouts are expected to be ignored by the global allocator.
