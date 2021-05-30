@@ -38,6 +38,16 @@ pub extern "C" fn _ein_realloc(pointer: *mut c_void, size: usize) -> *mut c_void
 }
 
 #[no_mangle]
+pub extern "C" fn _ein_free(pointer: *mut u8) {
+    unsafe {
+        std::alloc::dealloc(
+            pointer,
+            Layout::from_size_align(0, DEFAULT_ALIGNMENT).unwrap(),
+        )
+    }
+}
+
+#[no_mangle]
 pub extern "C" fn main() -> c_int {
     let mut stack = ffi::cps::Stack::new(INITIAL_STACK_CAPACITY);
 
